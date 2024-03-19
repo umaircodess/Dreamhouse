@@ -1,0 +1,14 @@
+<template>
+  <div class="button">
+    <lightning-button variant="brand" label="Create New" onclick={handleClick}></lightning-button>
+  </div>
+  <lightning-datatable key-field="id" data={data} columns={columns} onrowaction={handleRowAction}></lightning-datatable>
+  <template if:true={showchild}>
+    <c-record-form record-id={id} onokay={hidechild}>
+    </c-record-form>
+  </template>
+  <template if:true={createNew}>
+    <c-record-form onokay={hidechild}>
+    </c-record-form>
+  </template>
+</template>

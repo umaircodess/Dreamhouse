@@ -1,0 +1,19 @@
+<template>
+    <lightning-card label="Dynamic Apex">
+        <lightning-combobox
+          name="All Objects"
+          label="All sObjects"
+          placeholder="Select any sObject"
+          options={options}
+          onchange={handleChange}    
+        ></lightning-combobox>
+    </lightning-card>
+    <lightning-card>
+        <lightning-datatable
+          key-field="Id"
+          data={data}
+          columns={columns}
+          hide-checkbox-column
+        ></lightning-datatable>
+    </lightning-card>
+</template>

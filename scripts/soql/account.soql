@@ -1,0 +1,10 @@
+// Use .soql files to store SOQL queries.
+// You can execute queries in VS Code by selecting the
+//     query text and running the command:
+//     SFDX: Execute SOQL Query with Currently Selected Tex
+
+
+//SELECT FIELDS(ALL) from AccountBrand LIMIT 200
+
+SELECT SObjectType FROM ObjectPermissions GROUP BY SObjectType ORDER BY SObjectType ASC
+

@@ -7,7 +7,7 @@ import { ShowToastEvent } from "lightning/platformShowToastEvent";
 export default class AccCon extends LightningElement {
   showchild = false;
   @track data = [];
-  @track id;
+  id;
   createNew = false;
 
   @track columns = [

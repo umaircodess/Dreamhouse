@@ -148,3 +148,4 @@ List<Schema.RecordTypeInfo> recordTypeInfos = describeResult.getRecordTypeInfos(
         String a='Account';
         System.debug(dynamicapex.getSObjectTypeById('a00IR00001vGT8uYAG'));
 
+I am the alpha and the omega

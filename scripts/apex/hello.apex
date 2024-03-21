@@ -93,59 +93,70 @@ System.debug(response.getBody());
 Integer animals = CatAPICallout.catbreeds().total;
 System.debug(System.UserInfo.getSessionId().substring(15));
 
+Map<String, String> sObjectLabelsAndAPINames = new Map<String, String>();
+Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+for (String name : gd.keySet()) {
+  Schema.SObjectType objType = gd.get(name);
+  Schema.DescribeSObjectResult objDescribe = objType.getDescribe();
+  String label = objDescribe.getLabel();
+  sObjectLabelsAndAPINames.put(label, name);
+}
 
-        Map<String, String> sObjectLabelsAndAPINames = new Map<String, String>();
-        Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
-        for (String name : gd.keySet()) {
-            Schema.SObjectType objType = gd.get(name);
-            Schema.DescribeSObjectResult objDescribe = objType.getDescribe();
-            String label = objDescribe.getLabel();
-            sObjectLabelsAndAPINames.put(label, name);
-        }
+List<String> sObjectAPINames = new List<String>();
+Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+for (String name : gd.keySet()) {
+  sObjectAPINames.add(name);
+}
 
-                List<String> sObjectAPINames = new List<String>();
-        Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
-        for (String name : gd.keySet()) {
-            sObjectAPINames.add(name);
-        }
+SObjectType accountType = Schema.getGlobalDescribe().get('Account');
+Schema.SObjectTypeFields mfields = accountType.getDescribe().fields;
 
-        SObjectType accountType = Schema.getGlobalDescribe().get('Account');
-        Schema.SObjectTypeFields mfields = accountType.getDescribe().fields;
+Map<String, String> options = new Map<String, String>();
+for (Schema.SObjectType item1 : Schema.getGlobalDescribe().values()) {
+  String name = item1.getDescribe().getName();
+  // Exclude all the unwanted Sobjects e.g. CustomSettings, History, Share, Feed, ApexClass, Pages etc..
+  if (
+    item1.getDescribe().getRecordTypeInfos().size() > 0 &&
+    item1.getDescribe().isCreateable() &&
+    !name.containsignorecase('history') &&
+    !name.containsignorecase('tag') &&
+    !name.containsignorecase('share') &&
+    !name.containsignorecase('feed')
+  ) {
+    options.put(item1.getDescribe().getName(), item1.getDescribe().getLabel());
+  }
+}
+options.put('Asset', 'Asset');
+System.debug(options.get('Property'));
 
-
-            Map<String, String> options = new  Map<String, String> ();
-    for (Schema.SObjectType item1: Schema.getGlobalDescribe().values()) {
-        String name = item1.getDescribe().getName();
-        // Exclude all the unwanted Sobjects e.g. CustomSettings, History, Share, Feed, ApexClass, Pages etc..
-        if (item1.getDescribe().getRecordTypeInfos().size() > 0 && item1.getDescribe().isCreateable() &&
-            !name.containsignorecase('history') && !name.containsignorecase('tag') && !name.containsignorecase('share') && !name.containsignorecase('feed')) {
-            options.put(item1.getDescribe().getName(), item1.getDescribe().getLabel());
-        }
-    }
-    options.put('Asset', 'Asset');
-        System.debug(options.get('Property'));
-
-        Schema.DescribeSObjectResult describeResult = Account.sObjectType.getDescribe();
+Schema.DescribeSObjectResult describeResult = Account.sObjectType.getDescribe();
 List<Schema.RecordTypeInfo> recordTypeInfos = describeResult.getRecordTypeInfos();
-        for (Schema.RecordTypeInfo recordTypeInfo : recordTypeInfos) {
-                System.debug(recordTypeInfo);
-        }
+for (Schema.RecordTypeInfo recordTypeInfo : recordTypeInfos) {
+  System.debug(recordTypeInfo);
+}
 
- Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
-         System.debug(Account.sObjectType.getDescribe());
+Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+System.debug(Account.sObjectType.getDescribe());
 
-                 Map<String, String> sObjectLabelsAndAPINames = new Map<String, String>();
-        Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
-        for (String name : gd.keySet()) {
-            if (gd.get(name).getDescribe().isCreateable() && gd.get(name).getDescribe().isDeletable()&& !gd.get(name).getDescribe().isCustomSetting() && !gd.get(name).getDescribe().isDeprecatedAndHidden() &&
-            !name.containsignorecase('history') && !name.containsignorecase('tag') && !name.containsignorecase('share') && !name.containsignorecase('feed') && !name.containsignorecase('role')) {
-            Schema.SObjectType objType = gd.get(name);
-            Schema.DescribeSObjectResult objDescribe = objType.getDescribe();
-            String label = objDescribe.getLabel();
-            sObjectLabelsAndAPINames.put(label, name);
-        }
-        }
-        String a='Account';
-        System.debug(dynamicapex.getSObjectTypeById('a00IR00001vGT8uYAG'));
-
-I am the alpha and the omega
+Map<String, String> sObjectLabelsAndAPINames = new Map<String, String>();
+Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe();
+for (String name : gd.keySet()) {
+  if (
+    gd.get(name).getDescribe().isCreateable() &&
+    gd.get(name).getDescribe().isDeletable() &&
+    !gd.get(name).getDescribe().isCustomSetting() &&
+    !gd.get(name).getDescribe().isDeprecatedAndHidden() &&
+    !name.containsignorecase('history') &&
+    !name.containsignorecase('tag') &&
+    !name.containsignorecase('share') &&
+    !name.containsignorecase('feed') &&
+    !name.containsignorecase('role')
+  ) {
+    Schema.SObjectType objType = gd.get(name);
+    Schema.DescribeSObjectResult objDescribe = objType.getDescribe();
+    String label = objDescribe.getLabel();
+    sObjectLabelsAndAPINames.put(label, name);
+  }
+}
+String a = 'Account';
+System.debug(dynamicapex.getSObjectTypeById('a00IR00001vGT8uYAG'));

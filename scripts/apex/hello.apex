@@ -160,4 +160,3 @@ for (String name : gd.keySet()) {
 }
 String a = 'Account';
 System.debug(dynamicapex.getSObjectTypeById('a00IR00001vGT8uYAG'));
-Hello Apex

@@ -158,6 +158,3 @@ for (String name : gd.keySet()) {
     sObjectLabelsAndAPINames.put(label, name);
   }
 }
-String a = 'Account';
-System.debug(dynamicapex.getSObjectTypeById('a00IR00001vGT8uYAG'));
-a

@@ -13,12 +13,12 @@ jobs:
       - name: "Populate auth file with SFDX_URL secret of integration org"
         shell: bash
         run: |
-          echo ${{ secrets.URL}} > ./SFDC_URL.txt
+          echo ${{ secrets.URL}} > ./URL.txt
       - name: Authenticate with Salesforce
         uses: marcelblijleven/salesforcedx-actions@master
         with:
-          args: force:auth:sfdxurl:store --sfdx-url-file=./SFDC_URL.txt --alias=develop
+          args: force:auth:sfdxurl:store --sfdx-url-file=./URL.txt --alias=Develop
       - name: Run Apex tests
         uses: marcelblijleven/salesforcedx-actions@master
         with:
-          args: force:apex:test:run -l RunLocalTests -w 10 -o develop
+          args: force:apex:test:run -l RunLocalTests -w 10 -o Develop

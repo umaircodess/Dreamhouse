@@ -21,7 +21,7 @@ jobs:
       - name: Run Apex tests
         uses: marcelblijleven/salesforcedx-actions@master
         with:
-          args: force:apex:test:run -l RunLocalTests -w 10 -o Develop
+          args: apex run test -l RunLocalTests -w 10 -o Develop
 # name: GitHub Actions Demo
 # run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 # on:

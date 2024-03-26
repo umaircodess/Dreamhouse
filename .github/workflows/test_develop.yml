@@ -15,11 +15,11 @@ jobs:
         run: |
           echo ${{ secrets.SFDX_AUTH_URL}} > ./SFDX_AUTH_URL.txt
       - name: Authenticate with Salesforce
-        uses: marcelblijleven/salesforcedx-actions@master
+        uses: forcedotcom/salesforcedx-actions@master
         with:
           args: force:auth:sfdxurl:store --sfdx-url-file=./SFDX_AUTH_URL.txt --alias=Develop
       - name: Run Apex tests
-        uses: marcelblijleven/salesforcedx-actions@master
+        uses: forcedotcom/salesforcedx-actions@master
         with:
           args: apex run test -l RunLocalTests -w 10 -o Develop
 # name: GitHub Actions Demo

@@ -11,19 +11,40 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.2
-        # with:
-        #   fetch-depth: 0
+        with:
+          fetch-depth: 0
       # Install Salesforce CLI
       - name: Install Salesforce CLI
         run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+          wget https://developer.salesforce.com/media/salesforce-cli/sf/channels/stable/sf-linux-x64.tar.xz
           mkdir sfdx-cli
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+          tar xJf sf-linux-x64.tar.xz -C sfdx-cli --strip-components 1
           ./sfdx-cli/install
-      # - name: "Populate auth file with SFDX_URL secret of integration org"
-      #   shell: bash
-      #   run: |
-      #     echo ${{ secrets.SFDX_AUTH_URL}} > ./SFDX_AUTH_URL.txt
+
+      - name: "Installing sfdx git delta"
+        run: |
+          echo y | sfdx plugins:install sfdx-git-delta
+          sfdx plugins
+
+      - name: "Populate auth file with SFDX_URL secret of integration org"
+        shell: bash
+        run: |
+          echo ${{ secrets.SFDX_AUTH_URL}} > ./SFDX_AUTH_URL.txt
+
+      - name: "Authenticate to Org"
+        run: sfdx auth:sfdxurl:store -f ./SFDX_AUTH_URL.txt -s -a integration
+
+      - name: "Create delta packages for new, modified or deleted metadata"
+        run: |
+          mkdir changed-sources
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/
+
+      - name: "Deploy the entire branch to Integration org"
+        run: sfdx force:source:deploy -p changed-sources --testlevel RunLocalTests --json
+
+      - name: "Deploy destructive changes (if any) to Integration org"
+        run: sfdx project:delete:source -d "changed-sources/destructiveChanges"
+
       # - name: Authenticate with Salesforce
       #   uses: forcedotcom/salesforcedx-actions@master
       #   with:
@@ -32,7 +53,6 @@ jobs:
       #   uses: forcedotcom/salesforcedx-actions@master
       #   with:
       #     args: apex run test -l RunLocalTests -w 10 -o Develop
-
 # name: GitHub Actions Demo
 # run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 # on:
